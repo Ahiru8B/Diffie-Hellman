@@ -13,14 +13,15 @@ public class XorCrypt implements Crypt {
 	public String encode(String input) {
 		// надо чтобы оно шифровало через xor. Сейчас тут костыль с длиной ключа. Типа
 		// если взять ключ больше чем из одного числа то не будет правильно шифроваться
+		
 
-		System.err.println("byteKey lenth = " + key.toByteArray().length);
-		System.err.println("output lenth = " + input.getBytes().length);
+		System.err.println("byteKey length = " + key.toByteArray().length);
+		System.err.println("output length = " + input.getBytes().length);
 		byte[] byteKey = key.toByteArray();
 		byte[] output = new byte[input.getBytes().length];
 		byte[] inputBytes = input.getBytes();
 		for (int i = 0; i < input.getBytes().length; i++) {
-			output[i] = (byte) (byteKey[0] ^ inputBytes[i]);
+			output[i] = (byte) (byteKey[i % byteKey.length] ^ inputBytes[i]);
 		}
 
 		return new String(output);
@@ -28,6 +29,6 @@ public class XorCrypt implements Crypt {
 
 	public String decode(String input) {
 		// Этот метод просто надо создать
-		return null;
+		return encode(input);
 	}
 }

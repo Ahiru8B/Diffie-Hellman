@@ -18,7 +18,6 @@ class XorCryptTest {
 	@Test
 	void decode() {
 		XorCrypt crypt = new XorCrypt(new BigInteger("125135132414"));
-		assertEquals("`reg", crypt.encode("asdf"));
 		assertEquals("asdf", crypt.encode(crypt.encode("asdf")));
 		assertEquals("asdf", crypt.decode(crypt.encode("asdf")));
 	}

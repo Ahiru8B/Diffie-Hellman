@@ -14,7 +14,7 @@ class SimpleCryptGeneratorTest {
 		SimpleCryptGenerator generator = new SimpleCryptGenerator();
 		BigInteger key = generator.generate();
 		assertNotNull(key);
-		assertEquals(43, key);
+		assertEquals(new BigInteger("43"), key);
 	}
 
 }
