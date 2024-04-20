@@ -1,64 +1,84 @@
 package ru.sgu.hell.dh.model;
 
-import java.math.BigInteger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DiffieHellman {
-
-	// По ходу добавлять приватные поля
-	// Генерировать все значения только через SimpleCryptGenerator
+	private CryptGenerator cryptGenerator = new SimpleCryptGenerator();
+	private Long privateA;
+	private Long publicP;
+	private Long publicG;
+	private Long publicB;
 
 	public DiffieHellman() {
-		// Должен генерировать приватное число (а)
-		// Должен генерировать общие числа p, g
+		log.trace("DiffieGellman constructor without parameters");
+		privateA = cryptGenerator.generate();
+		publicP = cryptGenerator.generate();
+		publicG = cryptGenerator.generate();
 	}
 
-	public DiffieHellman(BigInteger g, BigInteger p) {
-		// Должен генерировать приватное число (а)
+	public DiffieHellman(Long g, Long p) {
+		log.trace("DiffieGellman constructor. g = {}, p = {}", g, p);
+		privateA = cryptGenerator.generate();
+		publicP = p;
+		publicG = g;
 	}
 
-	public BigInteger getP() {
-		return null;
+	public Long getP() {
+		return publicP;
 	}
 
-	public BigInteger getG() {
-		return null;
+	public Long getG() {
+		return publicG;
 	}
 
-	public BigInteger getA() {
-		return null;
+	public Long getA() {
+		log.trace("getA. publicG = {}", publicG);
+		return calculate(publicG);
 	}
 
-	public BigInteger getB() {
-		return null;
+	public Long getB() {
+		return publicB;
 	}
 
-	public BigInteger getPrivateA() {
-		return null;
+	public Long getPrivateA() {
+		return privateA;
 	}
 
-	public void addP(BigInteger p) {
-		// Должен пересчитывать A
+	public void addP(Long p) {
+		log.trace("DH, addP. p = {}", p);
+		publicP = p;
 	}
 
-	public void addG(BigInteger g) {
-		// Должен пересчитывать A
+	public void addG(Long g) {
+		log.trace("DH, addG. g = {}", g);
+		publicG = g;
 	}
 
-	public void addB(BigInteger b) {
-		// Должен генерировать приватный ключ
+	public void addB(Long b) {
+		log.trace("addB. b = {}", b);
+		publicB = b;
 	}
 
-	public BigInteger getSecretKey() {
-		// Возвращает приватный ключ (K)
-		return null;
+	public Long getSecretKey() {
+		log.trace("getSecretKey. b = {}, p = {}", publicB, publicP);
+		return calculate(publicB) % publicP;
 	}
 
-	private BigInteger calculate(BigInteger g) {
-		// Вычисляет A = g^a mod p
-		// или K = B^a mod p
-		// тут можно делать что угодно!
-		// можно вообще этот vtnjl удалить и считать значения в других методах
-		return null;
+	private Long calculate(Long g) {
+		log.trace("calculate. g = {}", g);
+		return pow(g, privateA) % publicP;
 	}
 
+	private Long pow(Long a, Long b) {
+		log.trace("pow. a = {}, b = {}", a, b);
+		if (b == 0) {
+			return 1l;
+		}
+		Long temp = a;
+		for (int i = 0; i < b; i++) {
+			temp *= a;
+		}
+		return temp;
+	}
 }

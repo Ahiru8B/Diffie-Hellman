@@ -9,8 +9,8 @@ import ru.sgu.hell.dh.model.Person;
 @Service
 @Slf4j
 public class WindowService {
-	private static Person alice;
-	private static Person bob;
+	private Person alice;
+	private Person bob;
 
 	public WindowService() {
 		log.trace("WindowService constructor");
@@ -21,11 +21,12 @@ public class WindowService {
 		log.trace("bob added g");
 		bobDH.addP(aliceDH.getP());
 		log.trace("bob added p");
-		bobDH.addB(aliceDH.getB());
+		bobDH.addB(aliceDH.getA());
 		log.trace("bob added b");
-		aliceDH.addB(bobDH.getB());
+		aliceDH.addB(bobDH.getA());
 		log.trace("alece added b");
 		alice = new Person(aliceDH);
+		log.trace("Created alice");
 		bob = new Person(bobDH);
 		log.trace("created alice and bob");
 	}
@@ -38,12 +39,12 @@ public class WindowService {
 		return bob;
 	}
 
-	public static void setAlice(Person alice) {
-		WindowService.alice = alice;
+	public void setAlice(Person alice) {
+		this.alice = alice;
 	}
 
-	public static void setBob(Person bob) {
-		WindowService.bob = bob;
+	public void setBob(Person bob) {
+		this.bob = bob;
 	}
 
 }
